@@ -5,6 +5,7 @@ import { useAuthSession } from '@/features/auth/domain/auth.repository'
 import { authAdapter } from '@/features/auth/domain/auth.adapter'
 import { Nav } from './nav'
 import { Button } from '@/components/ui/button'
+import { ThemeToggle } from '@/components/ui/theme-toggle'
 import {
   Sheet,
   SheetContent,
@@ -31,6 +32,8 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2">
+          <ThemeToggle />
+
           {isAuthenticated ? (
             <>
               <span className="text-sm text-muted-foreground hidden md:inline">
