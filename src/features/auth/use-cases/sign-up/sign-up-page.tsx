@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -14,13 +13,15 @@ import { useSignUp } from './use-sign-up.use-case'
 
 export function SignUpPage() {
   const { handleSignUp, error, isPending } = useSignUp()
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
 
-  const onSubmit = async (e: React.FormEvent) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    await handleSignUp(name, email, password)
+    const formData = new FormData(e.currentTarget)
+    handleSignUp(
+      formData.get('name') as string,
+      formData.get('email') as string,
+      formData.get('password') as string,
+    )
   }
 
   return (
@@ -39,33 +40,15 @@ export function SignUpPage() {
             )}
             <div className="space-y-2">
               <Label htmlFor="name">Nom</Label>
-              <Input
-                id="name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
+              <Input id="name" name="name" type="text" required />
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Courriel</Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <Input id="email" name="email" type="email" required />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Mot de passe</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <Input id="password" name="password" type="password" required />
               <p className="text-xs text-muted-foreground">
                 Minimum 8 caractères
               </p>

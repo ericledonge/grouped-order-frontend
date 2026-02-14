@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthWishesRouteImport } from './routes/_auth/wishes'
 import { Route as AuthAdminOrdersRouteImport } from './routes/_auth/admin/orders'
+import { Route as AuthAdminOrdersNewRouteImport } from './routes/_auth/admin/orders_.new'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -45,6 +46,11 @@ const AuthAdminOrdersRoute = AuthAdminOrdersRouteImport.update({
   path: '/admin/orders',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthAdminOrdersNewRoute = AuthAdminOrdersNewRouteImport.update({
+  id: '/admin/orders_/new',
+  path: '/admin/orders/new',
+  getParentRoute: () => AuthRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/wishes': typeof AuthWishesRoute
   '/admin/orders': typeof AuthAdminOrdersRoute
+  '/admin/orders/new': typeof AuthAdminOrdersNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/wishes': typeof AuthWishesRoute
   '/admin/orders': typeof AuthAdminOrdersRoute
+  '/admin/orders/new': typeof AuthAdminOrdersNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -68,12 +76,25 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/_auth/wishes': typeof AuthWishesRoute
   '/_auth/admin/orders': typeof AuthAdminOrdersRoute
+  '/_auth/admin/orders_/new': typeof AuthAdminOrdersNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/signup' | '/wishes' | '/admin/orders'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/wishes'
+    | '/admin/orders'
+    | '/admin/orders/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signup' | '/wishes' | '/admin/orders'
+  to:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/wishes'
+    | '/admin/orders'
+    | '/admin/orders/new'
   id:
     | '__root__'
     | '/'
@@ -82,6 +103,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/_auth/wishes'
     | '/_auth/admin/orders'
+    | '/_auth/admin/orders_/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -135,17 +157,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthAdminOrdersRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/admin/orders_/new': {
+      id: '/_auth/admin/orders_/new'
+      path: '/admin/orders/new'
+      fullPath: '/admin/orders/new'
+      preLoaderRoute: typeof AuthAdminOrdersNewRouteImport
+      parentRoute: typeof AuthRoute
+    }
   }
 }
 
 interface AuthRouteChildren {
   AuthWishesRoute: typeof AuthWishesRoute
   AuthAdminOrdersRoute: typeof AuthAdminOrdersRoute
+  AuthAdminOrdersNewRoute: typeof AuthAdminOrdersNewRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthWishesRoute: AuthWishesRoute,
   AuthAdminOrdersRoute: AuthAdminOrdersRoute,
+  AuthAdminOrdersNewRoute: AuthAdminOrdersNewRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)

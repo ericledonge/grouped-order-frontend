@@ -48,14 +48,9 @@ export function Header() {
               </Button>
             </>
           ) : (
-            <>
-              <Button variant="ghost" size="sm" asChild>
-                <Link to="/login">Connexion</Link>
-              </Button>
-              <Button size="sm" asChild>
-                <Link to="/signup">Inscription</Link>
-              </Button>
-            </>
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/login">Connexion</Link>
+            </Button>
           )}
 
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>

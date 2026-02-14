@@ -1,36 +1,28 @@
-import { useState } from 'react'
+import { useMutation } from '@tanstack/react-query'
 import { useRouter, useSearch } from '@tanstack/react-router'
 import { authAdapter } from '@/features/auth/domain/auth.adapter'
-import { validateSignInInput } from './sign-in.service'
 
 export function useSignIn() {
   const router = useRouter()
   const { redirect: redirectTo } = useSearch({ from: '/login' })
-  const [error, setError] = useState<string | null>(null)
-  const [isPending, setIsPending] = useState(false)
 
-  const handleSignIn = async (email: string, password: string) => {
-    setError(null)
-
-    const validation = validateSignInInput({ email, password })
-    if (!validation.success) {
-      setError(validation.error.issues[0].message)
-      return
-    }
-
-    setIsPending(true)
-    try {
+  const mutation = useMutation({
+    mutationFn: async ({ email, password }: { email: string; password: string }) => {
       await authAdapter.signIn(email, password)
+    },
+    onSuccess: async () => {
       await router.invalidate()
       await router.navigate({ to: redirectTo || '/' })
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Erreur de connexion',
-      )
-    } finally {
-      setIsPending(false)
-    }
+    },
+  })
+
+  const handleSignIn = (email: string, password: string) => {
+    mutation.mutate({ email, password })
   }
 
-  return { handleSignIn, error, isPending }
+  return {
+    handleSignIn,
+    error: mutation.error?.message ?? null,
+    isPending: mutation.isPending,
+  }
 }
