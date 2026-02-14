@@ -1,16 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
+import { ListOrdersPage } from '@/features/orders/use-cases/list-orders/list-orders-page'
 
 export const Route = createFileRoute('/_auth/admin/orders')({
-  component: AdminOrdersPage,
+  beforeLoad: ({ context }) => {
+    if (!context.auth.isAdmin) {
+      throw redirect({ to: '/' })
+    }
+  },
+  component: ListOrdersPage,
 })
-
-function AdminOrdersPage() {
-  return (
-    <div>
-      <h1 className="text-2xl font-bold">Commandes</h1>
-      <p className="text-muted-foreground mt-2">
-        Bientôt disponible.
-      </p>
-    </div>
-  )
-}
