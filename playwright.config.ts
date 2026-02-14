@@ -1,5 +1,7 @@
 import { defineConfig, devices } from '@playwright/test'
 
+const backendDir = process.env.E2E_BACKEND_DIR ?? '../backend'
+
 export default defineConfig({
   testDir: './e2e/specs',
   fullyParallel: false,
@@ -20,7 +22,7 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: 'cd ../backend && npx tsx scripts/start-e2e.ts',
+      command: `cd ${backendDir} && npx tsx scripts/start-e2e.ts`,
       port: 3000,
       reuseExistingServer: !process.env.CI,
       timeout: 15_000,

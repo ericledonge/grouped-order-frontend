@@ -18,8 +18,8 @@ jobs:
       - name: Checkout backend
         uses: actions/checkout@v4
         with:
-          repository: ericledonge/grouped-order-2
-          path: ../backend
+          repository: ericledonge/grouped-order-backend
+          path: backend
 
       - uses: actions/setup-node@v4
         with:
@@ -30,13 +30,15 @@ jobs:
         run: npm ci
 
       - name: Install backend dependencies
-        run: cd ../backend && npm ci
+        run: cd backend && npm ci
 
       - name: Install Playwright browsers
         run: npx playwright install chromium --with-deps
 
       - name: Run E2E tests
         run: npx playwright test
+        env:
+          E2E_BACKEND_DIR: backend
 
       - name: Upload test report
         uses: actions/upload-artifact@v4
